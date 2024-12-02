@@ -1,9 +1,9 @@
 <root BTCPP_format="3">
     <BehaviorTree ID="MainTree">
         <Sequence name="root_sequence">
-            <check_battery name="check_battery"/>
-            <open_gripper name="open_gripper"/>
-            <approach_object name="approach_object"/>
+            <check_battery name="check_battery" message="hello world"/>
+            <open_gripper name="open_gripper" text="{the_answer}"/>
+            <approach_object name="approach_object" message="{the_answer}"/>
             <close_gripper name="close_gripper"/>
         </Sequence>
     </BehaviorTree>
