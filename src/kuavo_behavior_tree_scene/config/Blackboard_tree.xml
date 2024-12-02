@@ -4,7 +4,7 @@
             <check_battery name="check_battery" message="hello world"/>
             <open_gripper name="open_gripper" text="{the_answer}"/>
             <approach_object name="approach_object" message="{the_answer}"/>
-            <close_gripper name="close_gripper"/>
+            <close_gripper name="close_gripper" new_message="{the_answer}"/>
         </Sequence>
     </BehaviorTree>
 </root>

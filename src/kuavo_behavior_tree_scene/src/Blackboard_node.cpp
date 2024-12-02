@@ -93,12 +93,19 @@ public:
 
   static BT::PortsList providedPorts()
   {
-    return { };
+    return { BT::InputPort<std::string>("new_message") };
   }
 
   BT::NodeStatus tick() override
   {
+    BT::Optional<std::string> msg = getInput<std::string>("new_message");
+    if (!msg)
+    {
+      throw BT::RuntimeError("missing required input [new_message]: ", 
+                              msg.error() );
+    }
     std::cout << "CloseGripper: " << this->name() << std::endl;
+    std::cout << "CloseGripper says: " << msg.value() << std::endl;
     ros::Duration(5.0).sleep();  // 等待5秒
     return BT::NodeStatus::SUCCESS;
   }
