@@ -100,7 +100,7 @@ int main(int argc, char** argv)
     ros::init(argc, argv, "bt_example_node");
     ros::NodeHandle nh;
     std::string package_path = ros::package::getPath("kuavo_behavior_tree_scene");
-    std::string tree_file_path = package_path + "/config/my_tree.xml";
+    std::string tree_file_path = package_path + "/config/Blackboard_tree.xml";
 
     // 使用 BehaviorTreeFactory 注册自定义节点
     BT::BehaviorTreeFactory factory;
