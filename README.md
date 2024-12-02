@@ -25,3 +25,4 @@ sudo chmod +x Groot2-v1.6.1-linux-installer.run
 
 # 效果Groot2 
 * ![image.png](./IMG/image.png)
+* ![image_param.png](./IMG/image_param.jpg)
