@@ -40,9 +40,9 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(timer_node src/timer_node.cpp)
-add_executable(Blackboard_node src/Blackboard_node.cpp)
-add_executable(Black_int_node src/Black_int_node.cpp)
+add_executable(timer_node src/example/timer_node.cpp)
+add_executable(Blackboard_node src/example/Blackboard_node.cpp)
+add_executable(Black_int_node src/example/Black_int_node.cpp)
 
 target_link_libraries(timer_node
   ${catkin_LIBRARIES}

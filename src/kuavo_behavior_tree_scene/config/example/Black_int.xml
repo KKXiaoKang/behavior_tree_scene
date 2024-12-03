@@ -1,11 +1,11 @@
 <root BTCPP_format="3">
     <BehaviorTree ID="MainTree">
-        <Sequence name="root_sequence">
+        <SequenceStar name="root_sequence">
             <check_battery name="check_battery" message="{the_answer}"/>
             <open_gripper name="open_gripper" text="{the_answer}"/>
             <approach_object name="approach_object" new_message="{the_answer}"/>
             <close_gripper name="close_gripper" new_new_message="{the_answer}"/>
             <move_base_action name="move_base_action" set_message="{the_answer}"/>
-        </Sequence>
+        </SequenceStar>
     </BehaviorTree>
 </root>

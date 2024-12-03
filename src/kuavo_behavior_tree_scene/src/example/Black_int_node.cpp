@@ -94,7 +94,9 @@ public:
     }
     Position2D target = res.value();
     printf("OpenGripper Target positions: [ %.1f, %.1f ]\n", target.x, target.y );
+    
     return BT::NodeStatus::SUCCESS;
+    // return BT::NodeStatus::FAILURE;
   }
 };
 
@@ -123,7 +125,9 @@ public:
     Position2D mygoal = {9.9, 2.111};
     setOutput<Position2D>("new_message", mygoal);
     ros::Duration(2.0).sleep();  // 等待5秒
+    
     return BT::NodeStatus::SUCCESS;
+    // return BT::NodeStatus::FAILURE;
   }
 };
 
@@ -224,7 +228,7 @@ int main(int argc, char** argv)
     ros::init(argc, argv, "bt_example_node");
     ros::NodeHandle nh;
     std::string package_path = ros::package::getPath("kuavo_behavior_tree_scene");
-    std::string tree_file_path = package_path + "/config/Black_int.xml";
+    std::string tree_file_path = package_path + "/config/example/Black_int.xml";
 
     BT::BehaviorTreeFactory factory;
     factory.registerNodeType<CheckBattery>("check_battery");
@@ -237,12 +241,13 @@ int main(int argc, char** argv)
 
     auto tree = factory.createTreeFromFile(tree_file_path);
 
-    ros::Rate loop_rate(20);
+    ros::Rate loop_rate(100);
     while (ros::ok())
     {
-        std::cout << "--- ticking\n";
         BT::NodeStatus status = tree.tickRoot();
-        std::cout << "--- status: " << toStr(status) << "\n\n";
+        std::cout << "\n--- ticking\n";
+        std::cout << "--- status: " << toStr(status) << "\n";
+        std::cout << "--- ticking\n\n";
         loop_rate.sleep();
         ros::spinOnce();
     }
