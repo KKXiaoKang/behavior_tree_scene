@@ -1,5 +1,6 @@
 #include <ros/ros.h>
 #include <ros/package.h> 
+#include <chrono> // 引入 chrono 库，用于时间操作
 
 #include <behaviortree_cpp_v3/behavior_tree.h>
 #include <behaviortree_cpp_v3/bt_factory.h>
@@ -164,6 +165,60 @@ public:
   }
 };
 
+// MoveBaseAction 
+class MoveBaseAction : public BT::StatefulActionNode
+{
+public:
+    // 构造函数
+    MoveBaseAction(const std::string& name, const BT::NodeConfiguration& config)
+        : StatefulActionNode(name, config),
+          start_time_(std::chrono::steady_clock::now()) // 初始化开始时间
+    {}
+
+    // 定义端口
+    static BT::PortsList providedPorts()
+    {
+        const char* description = "Simply print the goal on console...";
+        return { BT::InputPort<Position2D>("set_message", description) };
+    }
+
+    // 开始时调用
+    BT::NodeStatus onStart() override
+    { 
+        start_time_ = std::chrono::steady_clock::now(); // 记录当前时间
+        std::cout << "MoveBaseAction onStart: " << this->name() << std::endl;
+        return BT::NodeStatus::RUNNING;
+    }
+
+    // 每次调用时检查是否超过10秒
+    BT::NodeStatus onRunning() override
+    { 
+        auto now = std::chrono::steady_clock::now();
+        std::chrono::duration<double> elapsed_seconds = now - start_time_;
+        
+        // 如果未超过2秒，继续返回 RUNNING
+        if (elapsed_seconds.count() < 2.0)
+        {
+            std::cout << "MoveBaseAction onRunning: " << this->name() << std::endl;
+            return BT::NodeStatus::RUNNING;
+        }
+
+        // 超过10秒后返回 SUCCESS
+        std::cout << "MoveBaseAction SUCCESS: " << this->name() << std::endl;
+        return BT::NodeStatus::SUCCESS;
+    }
+
+    // 被中止时的回调
+    void onHalted() override
+    { 
+        printf("[ MoveBase: ABORTED ]");
+    }
+
+private:
+    std::chrono::steady_clock::time_point start_time_; // 用于记录开始时间
+};
+
+
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "bt_example_node");
@@ -176,6 +231,7 @@ int main(int argc, char** argv)
     factory.registerNodeType<OpenGripper>("open_gripper");
     factory.registerNodeType<ApproachObject>("approach_object");
     factory.registerNodeType<CloseGripper>("close_gripper");
+    factory.registerNodeType<MoveBaseAction>("move_base_action");
 
     ROS_INFO("All nodes registered.");
 
@@ -184,7 +240,9 @@ int main(int argc, char** argv)
     ros::Rate loop_rate(20);
     while (ros::ok())
     {
+        std::cout << "--- ticking\n";
         BT::NodeStatus status = tree.tickRoot();
+        std::cout << "--- status: " << toStr(status) << "\n\n";
         loop_rate.sleep();
         ros::spinOnce();
     }
