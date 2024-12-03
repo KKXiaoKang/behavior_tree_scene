@@ -234,8 +234,8 @@ int main(int argc, char** argv)
     factory.registerNodeType<CheckBattery>("check_battery");
     factory.registerNodeType<OpenGripper>("open_gripper");
     factory.registerNodeType<ApproachObject>("approach_object");
-    factory.registerNodeType<CloseGripper>("close_gripper");
     factory.registerNodeType<MoveBaseAction>("move_base_action");
+    factory.registerNodeType<CloseGripper>("close_gripper");
 
     ROS_INFO("All nodes registered.");
 
