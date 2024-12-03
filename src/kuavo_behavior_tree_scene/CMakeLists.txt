@@ -42,11 +42,16 @@ include_directories(
 
 add_executable(timer_node src/timer_node.cpp)
 add_executable(Blackboard_node src/Blackboard_node.cpp)
+add_executable(Black_int_node src/Black_int_node.cpp)
 
 target_link_libraries(timer_node
   ${catkin_LIBRARIES}
 )
 
 target_link_libraries(Blackboard_node
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(Black_int_node
   ${catkin_LIBRARIES}
 )
