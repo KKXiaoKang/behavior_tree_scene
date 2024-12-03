@@ -1,0 +1,26 @@
+<root BTCPP_format="3">
+    <BehaviorTree ID="navigation_tree">
+        <Sequence>
+            <RetryUntilSuccessful num_attempts="3">
+              <TaskIdOK nav_point_id="2"
+                        nav_point_pos="{nav_point_pos}"
+                        nav_point_quat="{nav_point_quat}"/>
+            </RetryUntilSuccessful>
+            <NavigationToTarget nav_point_pos="{nav_point_pos}"
+                                nav_point_quat="{nav_point_quat}"
+                                finsh_flag = "{nav_finsh_flag}"/>
+        </Sequence>
+    </BehaviorTree>
+    <TreeNodesModel>
+        <Condition ID="TaskIdOK" editable="true">
+            <input_port name="nav_point_id"/>
+            <output_port name="nav_point_pos"/>
+            <output_port name="nav_point_quat"/>
+        </Condition>
+        <Action ID="NavigationToTarget" editable="true">
+            <input_port name="nav_point_pos"/>
+            <input_port name="nav_point_quat"/>
+            <output_port name="finsh_flag"/>
+        </Action>
+    </TreeNodesModel>
+</root>

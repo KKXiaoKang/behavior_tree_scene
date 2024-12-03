@@ -23,10 +23,11 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES timer_example
-#  CATKIN_DEPENDS roscpp std_msgs
-#  DEPENDS system_lib
+  INCLUDE_DIRS 
+    include
+    ${catkin_INCLUDE_DIRS}
+  CATKIN_DEPENDS
+    ${CATKIN_PACKAGE_DEPENDENCIES}
 )
 
 ###########
@@ -36,10 +37,18 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
+add_executable(robot_hotel_node src/robot_hotel_node.cpp)
+target_link_libraries(robot_hotel_node
+  ${catkin_LIBRARIES}
+)
+
+###########
+## Test ##
+###########
 add_executable(timer_node src/example/timer_node.cpp)
 add_executable(Blackboard_node src/example/Blackboard_node.cpp)
 add_executable(Black_int_node src/example/Black_int_node.cpp)
