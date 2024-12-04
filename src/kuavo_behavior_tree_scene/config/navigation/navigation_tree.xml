@@ -1,26 +1,60 @@
 <root BTCPP_format="3">
     <BehaviorTree ID="navigation_tree">
+        <!-- Sequence SequenceStar -->
         <Sequence>
-            <RetryUntilSuccessful num_attempts="3">
-              <TaskIdOK nav_point_id="2"
-                        nav_point_pos="{nav_point_pos}"
-                        nav_point_quat="{nav_point_quat}"/>
-            </RetryUntilSuccessful>
-            <NavigationToTarget nav_point_pos="{nav_point_pos}"
-                                nav_point_quat="{nav_point_quat}"
-                                finsh_flag = "{nav_finsh_flag}"/>
+            <SequenceStar>
+                <RetryUntilSuccessful num_attempts="3">
+                  <TaskIdOK nav_point_id="2"
+                            nav_point_pos="{nav_point_pos}"
+                            nav_point_quat="{nav_point_quat}"
+                            current_nav_point_id="{nav_point_id}"/>
+                </RetryUntilSuccessful>
+                <RetryUntilSuccessful num_attempts="3">
+                  <NavigationToTarget current_nav_point_id="{nav_point_id}"
+                                      nav_point_pos="{nav_point_pos}"
+                                      nav_point_quat="{nav_point_quat}"
+                                      finsh_flag = "{nav_finsh_flag}"/>
+                </RetryUntilSuccessful>
+            </SequenceStar>
+            <Sequence>
+                <CheckVoice />
+                <Fallback>
+                    <AnswerUserQuery real_point_id="{nav_point_id}"/>
+                    <!-- <EscortToNewPoint /> -->
+                    <SequenceStar>
+                        <RetryUntilSuccessful num_attempts="3">
+                          <TaskIdOK nav_point_id="{nav_point_id}"
+                                    nav_point_pos="{nav_point_pos}"
+                                    nav_point_quat="{nav_point_quat}"
+                                    current_nav_point_id="{nav_point_id}"/>
+                        </RetryUntilSuccessful>
+                        <RetryUntilSuccessful num_attempts="3">
+                          <NavigationToTarget current_nav_point_id="{nav_point_id}"
+                                              nav_point_pos="{nav_point_pos}"
+                                              nav_point_quat="{nav_point_quat}"
+                                              finsh_flag = "{nav_finsh_flag}"/>
+                        </RetryUntilSuccessful>
+                    </SequenceStar>
+                </Fallback>
+            </Sequence>
         </Sequence>
     </BehaviorTree>
     <TreeNodesModel>
-        <Condition ID="TaskIdOK" editable="true">
-            <input_port name="nav_point_id"/>
-            <output_port name="nav_point_pos"/>
-            <output_port name="nav_point_quat"/>
-        </Condition>
+        <Action ID="AnswerUserQuery" editable="true">
+            <output_port name="real_point_id"/>
+        </Action>
+        <Condition ID="CheckVoice" editable="true"/>
         <Action ID="NavigationToTarget" editable="true">
+            <input_port name="current_nav_point_id"/>
             <input_port name="nav_point_pos"/>
             <input_port name="nav_point_quat"/>
             <output_port name="finsh_flag"/>
         </Action>
+        <Condition ID="TaskIdOK" editable="true">
+            <input_port name="nav_point_id"/>
+            <output_port name="nav_point_pos"/>
+            <output_port name="nav_point_quat"/>
+            <output_port name="current_nav_point_id"/>
+        </Condition>
     </TreeNodesModel>
 </root>
